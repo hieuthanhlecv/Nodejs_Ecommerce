@@ -47,7 +47,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 })
 
 
-//
+
 const deleteProduct = asyncHandler(async (req, res) => {
     const { pid } = req.params
     const deleteProduct = await Product.findByIdAndDelete(pid)
