@@ -26,12 +26,40 @@ const getProduct = asyncHandler(async (req, res) => {
 
 //Filtering, sorting & pagination
 const getAllProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find()
-    return res.status(200).json({
-        success: products ? true : false,
-        productDatas: products ? products : 'Cannot get products'
-    })
+    const queries = {...req.query}
+    // Tách các trường đặc biệt ra khỏi query
+    const exculeFields = ['limit', 'sort', 'page', 'fields']
+    exculeFields.forEach(el => delete queries[el])
+    // Format lại các operators cho đúng cú pháp của mongoose
+    let queryString = JSON.stringify(queries)
+    queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, mactheEl => `$${mactheEl}`)
+    const formatedQueries = JSON.parse(queryString) 
+    console.log(formatedQueries);
+    //Filtering
+    if (queries?.title) formatedQueries.title = { $regex: queries.title, $options: 'i' } //'i' không phân biệt hoa thường
+    let queryCommand = Product.find(formatedQueries)
+
+
+    //Sorting
+    if (req.query.sort) {
+        const sortBy = req.query.sort.split(',').join(' ') //vd chuyeenr ab,cd=>[ab,cd]=>ab cd
+        queryCommand= queryCommand.sort(sortBy)
+    }
+    //Execute query
+    queryCommand.exec()
+        .then(async(response) => {
+            const counts = await Product.find(formatedQueries).countDocuments();
+            return res.status(200).json({
+                success: response ? true : false,
+                products: response ? response : 'Cannot get products',
+                counts
+            })
+        })
+        .catch((err) => {
+            throw new Error(err.message);
+        });
 })
+
 
 
 
@@ -67,7 +95,6 @@ module.exports = {
     updateProduct,
     deleteProduct
 }
-
 
 
 
