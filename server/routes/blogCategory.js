@@ -3,7 +3,6 @@ const ctrls = require('../controllers/blogCategory')
 const { verifyAccessToken, isAdmin } = require('../middlewares/verifyToken')
 
 
-
 router.post('/', [verifyAccessToken, isAdmin], ctrls.createBlogCategory)
 router.get('/', ctrls.getBlogCategorys)
 router.put('/:bcid', [verifyAccessToken, isAdmin], ctrls.updateBlogCategory)

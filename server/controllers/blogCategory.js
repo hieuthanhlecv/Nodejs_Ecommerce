@@ -31,6 +31,7 @@ const updateBlogCategory = asyncHandler(async (req, res) => {
 
 
 
+
 const deleteBlogCategory = asyncHandler(async (req, res) => {
       const {bcid} = req.params
       const response = await BlogCategory.findByIdAndDelete(bcid)

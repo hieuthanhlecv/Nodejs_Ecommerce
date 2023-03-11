@@ -120,7 +120,7 @@ const ratings = asyncHandler(async(req, res) => {
         }, {new: true})
     }
 
-    //sum totalRatings
+    //tính tổng sum totalRatings
     const updatedProduct = await Product.findByIdAndUpdate(pid)
     const ratingCount = updatedProduct.ratings.length
     const sumRatings = updatedProduct.ratings.reduce((sum, el) => sum + +el.star, 0)
