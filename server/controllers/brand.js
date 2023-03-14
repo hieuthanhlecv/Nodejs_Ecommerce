@@ -22,6 +22,7 @@ const getBrands = asyncHandler(async (req, res) => {
 
 const updateBrand = asyncHandler(async (req, res) => {
       const {bid} = req.params
+      if (Object.keys(req.body).length===0) throw new Error('Missing inputs')
       const response = await Brand.findByIdAndUpdate(bid, req.body, {new:true})
       return res.status(200).json({
             success: response ? true : false,
@@ -37,7 +38,7 @@ const deleteBrand = asyncHandler(async (req, res) => {
       const response = await Brand.findByIdAndDelete(bid)
       return res.status(200).json({
             success: response ? true : false,
-            deleteCategory: response ? response : 'cannot delete brand'
+            deleteBrand: response ? response : 'cannot delete brand'
       })
 })
 

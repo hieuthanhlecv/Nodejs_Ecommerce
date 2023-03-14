@@ -22,6 +22,7 @@ const getBlogCategorys = asyncHandler(async (req, res) => {
 
 const updateBlogCategory = asyncHandler(async (req, res) => {
       const {bcid} = req.params
+      if (Object.keys(req.body).length===0) throw new Error('Missing inputs')
       const response = await BlogCategory.findByIdAndUpdate(bcid, req.body, {new:true})
       return res.status(200).json({
             success: response ? true : false,
