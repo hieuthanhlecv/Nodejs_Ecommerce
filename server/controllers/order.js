@@ -21,6 +21,10 @@ const createOrder = asyncHandler(async(req, res) => {
             createData.coupon = coupon
       }
       const rs = await Order.create({ products, total, orderBy: _id })
+
+      // Xóa các sản phẩm trong giỏ hàng của người dùng
+      await User.updateOne({ _id }, { cart: [] })
+      
       return res.status(200).json({
             sucess: rs ? true : false,
             Order: rs ? rs : 'Some thing went wrong'
