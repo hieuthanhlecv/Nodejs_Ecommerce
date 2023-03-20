@@ -1,4 +1,4 @@
-# Build API for website E-Commerce
+# API for website E-Commerce
 
 
 **Overview of API functions:** Register, login, logout, forgot password, CRUD with permission user and admin (user, product, category, blog, brand, coupon, order), place order, pagination-sorting product
